@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>MetaEarth VR Viewer</title>
+    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+    <script src="https://unpkg.com/aframe-look-at-component@0.8.0/dist/aframe-look-at-component.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+
+  </head>
+
+  <body>
+    <a-scene
+      vr-mode-ui="enabled: false"
+      arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false;"
+    >
+      <a-assets>
+        <% for(var i=0; i < tokens.length; i++) { %>
+        <a-asset-item
+          id="<%= tokens[i].id %>"
+          src="<%= tokens[i].content[0].data %>"
+        ></a-asset-item>
+        <% } %>
+      </a-assets>
+      <% for(var i=0; i < tokens.length; i++) { %>
+      <a-entity
+        gltf-model="#<%=tokens[i].id%>"
+                animation-mixer
+        gps-entity-place="latitude: <%=tokens[i].location.lat%>; longitude: <%=tokens[i].location.lng%>"
+                scale="<%= tokens[i].content[0].scale.x %> <%= tokens[i].content[0].scale.y %> <%= tokens[i].content[0].scale.z %>"
+                rotation="<%= tokens[i].content[0].rotation.x %> <%= tokens[i].content[0].rotation.y %> <%= tokens[i].content[0].rotation.z %>"
+                position="<%= tokens[i].content[0].position.x %> <%= tokens[i].content[0].position.y %> <%= tokens[i].content[0].position.z %>"
+      ></a-entity>
+
+      <% } %>
+
+<!--       <a-camera
+        gps-new-camera="gpsMinDistance: 5; simulateLatitude: 37.327344; simulateLongitude: -121.849355"
+        look-controls-enabled="false"
+        arjs-device-orientation-controls
+      ></a-camera> -->
+       <a-camera
+        rotation-reader
+        look-controls-enabled='false' arjs-look-controls='smoothingFactor: 0.1'
+        gps-camera="simulateLatitude: 37.327723; simulateLongitude: -121.849861; gpsMinDistance: 5;"
+      >
+      </a-camera>
+    </a-scene>
+  </body>
+</html>
